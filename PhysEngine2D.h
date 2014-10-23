@@ -33,7 +33,7 @@ public:
 
 	// Environmental collision
 	///@param[in] The game object that we're going to check for environmental collision with
-	bool WallCollision(GameObject& object1);
+	void WallCollision(GameObject& object1);
 
 private:
 	int screenW_;

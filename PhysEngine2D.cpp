@@ -18,7 +18,7 @@ void PhysEngine2D::Init(int platformW, int platformH)
 }
 
 
-bool PhysEngine2D::WallCollision(GameObject& object1)
+void PhysEngine2D::WallCollision(GameObject& object1)
 {
 	abfw::Vector3 pos = object1.position();
 	abfw::Vector2 vel = object1.velocity();
@@ -29,30 +29,29 @@ bool PhysEngine2D::WallCollision(GameObject& object1)
 	if(pos.y + (height * 0.5f) > screenH_)
 	{
 		object1.set_position(pos.x, screenH_ - (height * 0.5f), 0);
-		return true;
+		object1.set_velocity(vel.x, 0);
 	}
 
 	// Collision between the top of the object and the top of the screen
 	if(pos.y - (height * 0.5f) < 0)
 	{
 		object1.set_position(pos.x, (height * 0.5f), 0);
-		return false;
+		object1.set_velocity(vel.x, 0);
 	}
 
 	// Collision between the right of the object and the right of the screen
 	if(pos.x + (width * 0.5f) > screenW_)
 	{
 		object1.set_position(pos.x - (width * 0.5f), pos.y, 0);
-		return false;
+		object1.set_velocity(0, vel.y);
 	}
 
 	// Collision between the left of the object and the left of the screen
 	if(pos.x - (width * 0.5f) < 0)
 	{
 		object1.set_position((width * 0.5f), pos.y, 0);
-		return false;
+		object1.set_velocity(0, vel.y);
 	}
-	return false;
 }
 
 void PhysEngine2D::SwapVelocities(GameObject& object1, GameObject& object2)

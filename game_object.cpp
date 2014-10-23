@@ -15,12 +15,6 @@ void GameObject::move(int pWidth, int pHeight)
 	set_position(position_.x + velocity_.x, position_.y + velocity_.y, position_.z);
 }
 
-void GameObject::moveTo(float targetX, float targetY)
-{
-	abfw::Vector3 target(targetX, targetY, 0);
-	set_position(target);
-}
-
 bool GameObject::collision_check(GameObject target)
 {
 	float halfW = width_ * 0.5;
