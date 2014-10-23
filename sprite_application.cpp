@@ -1,7 +1,8 @@
 #include "sprite_application.h"
 #include <system/platform.h>
 #include <iostream>
-#include <random>
+#include <iterator>
+//#include <algorithm>
 
 SpriteApplication::SpriteApplication(abfw::Platform& platform) :
 	abfw::Application(platform),
@@ -25,6 +26,8 @@ void SpriteApplication::Init()
 
 	blocks.push_back(Block::Block(Block::WOOD, Block::RECT, 50, 20));
 	blocks.push_back(Block::Block(Block::GLASS, Block::SQUARE, 60, 200));
+
+	bird.shoot(30, 50);
 }
 
 void SpriteApplication::CleanUp()
@@ -47,6 +50,9 @@ bool SpriteApplication::Update(float ticks)
 	int pWidth = platform_.width();
 	int pHeight = platform_.height();
 
+	// Firing the bird
+	bird.update();
+
 	// Clearing the checked collisions
 	checkedCollisions_.clear();
 
@@ -65,6 +71,10 @@ bool SpriteApplication::Update(float ticks)
 		}
 	}
 
+	// Bouncing the bird
+	if(physics_.WallCollision(bird))
+		bird.bounceGround(0.5);
+
 	for(int i = 0; i < blocks.size(); ++i)
 	{
 		// Updating the block
@@ -73,17 +83,15 @@ bool SpriteApplication::Update(float ticks)
 		// Checking for collision with other blocks
 		for(int j = 0; j < blocks.size(); ++j)
 		{
-			auto check1 = std::find(std::begin(checkedCollisions_),
-						std::end(checkedCollisions_), abfw::vector2(i,j));
-			auto check2 = std::find(std::begin(checkedCollisions_),
-						std::end(checkedCollisions_), abfw::vector2(j,i));
-			if(i != j && !(check1 == std::end(checkedCollisions_ || check2 == std::end(checkedCollisions_))))
+			auto check1 = std::find(checkedCollisions_.begin(), checkedCollisions_.end(), abfw::Vector2(i,j));
+			auto check2 = std::find(checkedCollisions_.begin(), checkedCollisions_.end(), abfw::Vector2(j,i));
+
+			if(i != j && (check1 == checkedCollisions_.end() && check2 == checkedCollisions_.end()))
 			{
 				if(physics_.BoundingBox(blocks[i], blocks[j]))
 				{
 					// Temp, to be replaced with real velocities
-					physics_.Stop(blocks[0], blocks[1], gravityVector_);
-					std::cout << physics_.BoundingBoxSides(blocks[0], blocks[1]) << std::endl;	//TODO, fix this malarky
+					physics_.Stop(blocks[i], blocks[j], gravityVector_);
 				}
 
 				// Flagging the current collision as checked
@@ -104,9 +112,12 @@ void SpriteApplication::Render()
 	// set up sprite renderer for drawing
 	sprite_renderer_->Begin();
 
-	//sprite_renderer_->DrawSprite(block);
+	// rendering the blocks
 	for(int i = 0; i < blocks.size(); ++i)
 		sprite_renderer_->DrawSprite(blocks[i]);
+
+	// rendering the bird
+	sprite_renderer_->DrawSprite(bird);
 
 	// tell sprite renderer that all sprites have been drawn
 	sprite_renderer_->End();

@@ -8,6 +8,7 @@
 #include <vector>
 #include "Block.h"
 #include "PhysEngine2D.h"
+#include "bird.h"
 
 namespace abfw
 {
@@ -27,6 +28,7 @@ public:
 private:
 	abfw::SonyControllerInputManager* controller_manager_;
 	std::vector<Block> blocks;
+	Bird bird;
 	std::vector<abfw::Vector2> checkedCollisions_;
 	PhysEngine2D physics_;
 	abfw::Font font_;
