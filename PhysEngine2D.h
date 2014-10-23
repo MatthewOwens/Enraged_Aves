@@ -17,6 +17,10 @@ public:
 	/// 1 - Top, 2 - bottom, 3 - left, 4 - right
 	int BoundingBoxSides(const GameObject& object1, const GameObject& object2);
 
+	/// Seperates two colliding objects by moving them slightly apart
+	/// @param[in] The game objects to sperate
+	void Seperate(GameObject& object1, GameObject& object2);
+
 	///@param[in] The game objects to check for collision
 	///@param[out] Wether or not there was collision
 	bool BoundingCircle(const GameObject& object1, const GameObject& object2);

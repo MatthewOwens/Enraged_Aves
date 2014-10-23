@@ -18,6 +18,17 @@ bld/
 [Bb]in/
 [Oo]bj/
 
+# Top Secret
+D3D11 Debug/
+PSVita_Debug/
+PSVita_Release/
+
+# VS
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.7z
+
 # Roslyn cache directories
 *.ide/
 

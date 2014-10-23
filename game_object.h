@@ -13,7 +13,7 @@ public:
 	/// @param[in] the width and height of the platform screen
 	void move(int pWidth, int pHeight);
 
-	/// TODO: COMMENTS
+	/// @param[in] the x and y coords to move the object to
 	void moveTo(float targetX, float targetY);
 
 	/// @param[in] the game_object to check for collision with

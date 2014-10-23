@@ -122,9 +122,52 @@ int PhysEngine2D::BoundingBoxSides(const GameObject& object1, const GameObject& 
 	float posx2 = object2.position().x;
 	float posy2 = object2.position().y;
 
-	if((posy1 - halfh1) < (posy2 + halfh2) && posy1 > posy2) return 1;	// top
-	if((posy1 + halfh1) > (posy2 - halfh2) && posy1 < posy2) return 2;	// bottom
-	if((posx1 - halfw1) < (posx2 + halfw2) && posx1 > posx2) return 3;	// left
-	if((posx1 + halfw1) > (posx2 - halfw2) && posx1 < posx2) return 4;	// right
+	if((posy1 - halfh1) < (posy2 + halfh2) && posy1 > posy2)// top
+		return 1;
+	if((posy1 + halfh1) > (posy2 - halfh2) && posy1 < posy2)// bottom
+		return 2;
+	if((posx1 - halfw1) < (posx2 + halfw2) && posx1 > posx2)// left
+		return 3;
+	if((posx1 + halfw1) > (posx2 - halfw2) && posx1 < posx2)// right
+		return 4;
 	return 0;
+}
+
+void PhysEngine2D::Seperate(GameObject& object1, GameObject& object2)
+{
+	float halfw1 = object1.width()*0.5f;
+	float halfh1 = object1.height()*0.5f;
+	float halfw2 = object2.width()*0.5f;
+	float halfh2 = object2.height()*0.5f;
+	float posx1 = object1.position().x;
+	float posy1 = object1.position().y;
+	float posx2 = object2.position().x;
+	float posy2 = object2.position().y;
+
+	switch (BoundingBoxSides(object1, object2))
+	{
+	case 1:
+		if(posy1 - halfh1 - halfh2 > 0)
+			object2.moveTo(posx2, posy1 - halfh1 - halfh2);
+		else
+			object1.moveTo(posx1, posx2 + halfh1 + halfh2);
+		break;
+	case 2:
+		if(posy1 + halfh1 + halfh2 < screenH_ - halfh2)
+			object2.moveTo(posx2, posy1 + halfh1 + halfh2);
+		else
+			object1.moveTo(posx1, posy2 - halfh2 - halfh1);
+		break;
+	case 3:
+		object2.moveTo(object1.position().x - object1.width() * 0.5 - object2.width() * 0.5,
+			object2.position().y);
+		break;
+	case 4:
+		object2.moveTo(object1.position().x + object1.width() * 0.5,
+			object2.position().y);
+		break;
+	case 0:
+		std::cout << "Something went wrong, seperate was called when two blocks wern't colliding" << std::endl;
+		break;
+	}
 }

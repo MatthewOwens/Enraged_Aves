@@ -14,6 +14,7 @@ public:
 	~Block(void);
 	Block(Material mat, Shape shape, int x, int y);
 	void Update(abfw::Vector2 acceleration, int pWidth, int pHeight);
+	void TakeDamage(abfw::Vector2 incomingVelocity);
 private:
 	Material matVal_;
 	Shape shapeVal_;

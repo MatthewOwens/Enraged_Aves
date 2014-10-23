@@ -24,10 +24,10 @@ void SpriteApplication::Init()
 	controller_manager_ = platform_.CreateSonyControllerInputManager();
 	physics_.Init(platform_.width(), platform_.height());
 
-	blocks.push_back(Block::Block(Block::WOOD, Block::RECT, 50, 20));
-	blocks.push_back(Block::Block(Block::GLASS, Block::SQUARE, 60, 200));
+	blocks.push_back(Block::Block(Block::WOOD, Block::RECT, 50, 200));
+	blocks.push_back(Block::Block(Block::GLASS, Block::SQUARE, 60, 20));
 
-	bird.shoot(30, 50);
+	bird.shoot(30, 50);	// TODO: Proper launching
 }
 
 void SpriteApplication::CleanUp()
@@ -68,6 +68,8 @@ bool SpriteApplication::Update(float ticks)
 		if ((controller->buttons_down() & (ABFW_SONY_CTRL_START | ABFW_SONY_CTRL_SELECT)) == (ABFW_SONY_CTRL_START | ABFW_SONY_CTRL_SELECT))
 		{
 			std::cout << "start and select pressed" << std::endl;
+			exit(0);
+			// return false - don't do this, resets the vita
 		}
 	}
 
@@ -92,6 +94,7 @@ bool SpriteApplication::Update(float ticks)
 				{
 					// Temp, to be replaced with real velocities
 					physics_.Stop(blocks[i], blocks[j], gravityVector_);
+					physics_.Seperate(blocks[i], blocks[j]);
 				}
 
 				// Flagging the current collision as checked

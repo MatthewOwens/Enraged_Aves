@@ -20,10 +20,12 @@ Block::Block(Block::Material mat, Block::Shape shape, int x, int y)
 			break;
 		case WOOD:
 			hitpoints_ = 10;
+			mass_ = 40;
 			set_colour(0xFF336699);
 			break;
 		case STONE:
 			hitpoints_ = 20;
+			mass_ = 80;
 			set_colour(0xFF808080);
 			break;
 	}
@@ -42,6 +44,13 @@ Block::Block(Block::Material mat, Block::Shape shape, int x, int y)
 			std::cout << "Tri's aren't done yet!" << std::endl;
 			break;
 	}
+}
+
+void Block::TakeDamage(abfw::Vector2 incomingVelocity)
+{
+	float damage = incomingVelocity.x + incomingVelocity.y;
+
+	hitpoints_ -= damage;
 }
 
 void Block::Update(abfw::Vector2 acceleration, int pWidth, int pHeight)
