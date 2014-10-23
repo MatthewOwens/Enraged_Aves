@@ -1,0 +1,56 @@
+	//in the init
+
+for (int i = 0;i<32;i++)
+	{
+		game_object_[i].set_position(abfw::Vector3(platform_.width()*0.5f, platform_.height()*0.5f, 0.f));
+		game_object_[i].set_colour(0xff00ff00);
+	}
+	eyes[0].set_position(abfw::Vector3(game_object_[0].position().x - 8.0f, game_object_[0].position().y - 8.0f, 0.f));
+	eyes[1].set_position(abfw::Vector3(game_object_[0].position().x + 8.0f, game_object_[0].position().y - 8.0f, 0.f));
+	beak.set_position(abfw::Vector3(platform_.width()*0.5f, game_object_[0].position().y+8.0f, 0.f));
+
+	float k = 0;
+	for (int i = 0;i<32;i++)
+	{
+		game_object_[i].set_rotation(k);
+		k+=0.28125;
+	}
+	beak.set_rotation(0.7873163375f);
+
+	for (int i = 0;i<32;i++)
+	{
+		game_object_[i].set_width(32.0f);
+		game_object_[i].set_height(32.0f);
+	}
+	for (int i =0;i<2;i++)
+	{
+		eyes[i].set_width(8.0f);
+		eyes[i].set_height(8.0f);
+	}
+	beak.set_width(8.0f);
+	beak.set_height(8.0f);
+	beak.set_colour(0xff00ffff);
+
+	
+	//update function
+	// to move the sprite as one
+	for (int i = 1;i<32;i++)
+	{
+		game_object_[i].set_position(abfw::Vector3(game_object_[0].position().x, game_object_[0].position().y, o.f));
+		eyes[0].set_position(abfw::Vector3(game_object_[0].position().x - 8.0f, game_object_[0].position().y - 8.0f, 0.f));
+		eyes[1].set_position(abfw::Vector3(game_object_[0].position().x + 8.0f, game_object_[0].position().y - 8.0f, 0.f));
+		beak.set_position(abfw::Vector3(game_object_[0].position().x, game_object_[0].position().y+8.0f, 0.f));
+	}
+
+	
+	//in the render
+
+	for (int i = 0;i<32;i++)
+	{
+		sprite_renderer_->DrawSprite(game_object_[i]);
+	}
+	for (int i = 0; i<2;i++)
+	{
+		sprite_renderer_->DrawSprite(eyes[i]);
+	}
+	sprite_renderer_->DrawSprite(beak);
