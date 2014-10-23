@@ -122,6 +122,18 @@ void SpriteApplication::Render()
 	// rendering the bird
 	sprite_renderer_->DrawSprite(bird);
 
+	//////////////////////////////////////////////////////
+	for (int i = 0;i<32;i++)
+	{
+		sprite_renderer_->DrawSprite(bird.body[i]);
+	}
+	for (int i = 0; i<2;i++)
+	{
+		sprite_renderer_->DrawSprite(bird.eyes[i]);
+	}
+	sprite_renderer_->DrawSprite(bird.beak);
+	//////////////////////////////////////
+
 	// tell sprite renderer that all sprites have been drawn
 	sprite_renderer_->End();
 }

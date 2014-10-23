@@ -15,6 +15,11 @@ class Bird: public GameObject
 		void bounceX(float e);
 		void bounceY(float e);
 		void reset(float x, float y);
+		
+		Sprite body[32];
+		Sprite Eyes[2];
+		Sprite Beak;
+				
 
 	protected:
 		float dTime;	
