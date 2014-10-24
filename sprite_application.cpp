@@ -1,8 +1,7 @@
 #include "sprite_application.h"
 #include <system/platform.h>
 #include <iostream>
-#include <iterator>
-//#include <algorithm>
+#include <random>
 
 SpriteApplication::SpriteApplication(abfw::Platform& platform) :
 	abfw::Application(platform),
@@ -27,9 +26,14 @@ void SpriteApplication::Init()
 	touch_manager_->EnablePanel(0);
 	physics_.Init(platform_.width(), platform_.height());
 
+<<<<<<< HEAD
 	blocks.push_back(Block::Block(Block::WOOD, Block::RECT, 900, 200));
 	blocks.push_back(Block::Block(Block::GLASS, Block::SQUARE, 880, 150));
 	blocks.push_back(Block::Block(Block::STONE, Block::RECT, 840, 200));
+=======
+	blocks.push_back(Block::Block(Block::WOOD, Block::RECT, 50, 20));
+	blocks.push_back(Block::Block(Block::GLASS, Block::SQUARE, 60, 200));
+>>>>>>> 5535a8eddcf9b9445aa49765debfc21192bf362e
 }
 
 void SpriteApplication::CleanUp()
@@ -56,8 +60,11 @@ bool SpriteApplication::Update(float ticks)
 	int pWidth = platform_.width();
 	int pHeight = platform_.height();
 
+<<<<<<< HEAD
 	bird.update();
 
+=======
+>>>>>>> 5535a8eddcf9b9445aa49765debfc21192bf362e
 	// Clearing the checked collisions
 	checkedCollisions_.clear();
 
@@ -100,10 +107,6 @@ bool SpriteApplication::Update(float ticks)
 		}
 	}
 
-	// Bouncing the bird
-	if(physics_.WallCollision(bird))
-		bird.bounceGround(0.5);
-
 	for(int i = 0; i < blocks.size(); ++i)
 	{
 		// Updating the block
@@ -113,16 +116,22 @@ bool SpriteApplication::Update(float ticks)
 		// Checking for collision with other blocks
 		for(int j = 0; j < blocks.size(); ++j)
 		{
-			auto check1 = std::find(checkedCollisions_.begin(), checkedCollisions_.end(), abfw::Vector2(i,j));
-			auto check2 = std::find(checkedCollisions_.begin(), checkedCollisions_.end(), abfw::Vector2(j,i));
-
-			if(i != j && (check1 == checkedCollisions_.end() && check2 == checkedCollisions_.end()))
+			auto check1 = std::find(std::begin(checkedCollisions_),
+						std::end(checkedCollisions_), abfw::vector2(i,j));
+			auto check2 = std::find(std::begin(checkedCollisions_),
+						std::end(checkedCollisions_), abfw::vector2(j,i));
+			if(i != j && !(check1 == std::end(checkedCollisions_ || check2 == std::end(checkedCollisions_))))
 			{
 				if(physics_.BoundingBox(blocks[i], blocks[j]))
 				{
 					// Temp, to be replaced with real velocities
+<<<<<<< HEAD
 					physics_.Stop(blocks[i], blocks[j], gravityVector_);
 					physics_.Seperate(blocks[i], blocks[j]);
+=======
+					physics_.Stop(blocks[0], blocks[1], gravityVector_);
+					std::cout << physics_.BoundingBoxSides(blocks[0], blocks[1]) << std::endl;	//TODO, fix this malarky
+>>>>>>> 5535a8eddcf9b9445aa49765debfc21192bf362e
 				}
 
 				// Flagging the current collision as checked
@@ -168,13 +177,16 @@ void SpriteApplication::Render()
 	// set up sprite renderer for drawing
 	sprite_renderer_->Begin();
 
-	// rendering the blocks
+	//sprite_renderer_->DrawSprite(block);
 	for(int i = 0; i < blocks.size(); ++i)
 		sprite_renderer_->DrawSprite(blocks[i]);
 
+<<<<<<< HEAD
 	// rendering the bird
 	bird.render(sprite_renderer_);
 
+=======
+>>>>>>> 5535a8eddcf9b9445aa49765debfc21192bf362e
 	// tell sprite renderer that all sprites have been drawn
 	sprite_renderer_->End();
 }
