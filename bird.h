@@ -2,6 +2,7 @@
 #define _BIRD_H
 
 #include "game_object.h"
+#include "graphics/sprite_renderer.h"
 #include <cmath>
 
 class Bird: public GameObject
@@ -15,11 +16,12 @@ class Bird: public GameObject
 		void bounceX(float e);
 		void bounceY(float e);
 		void reset(float x, float y);
-		
+		inline bool flight() {return flying; }
+		void render(abfw::SpriteRenderer* sr);
+
 		Sprite body[32];
-		Sprite Eyes[2];
-		Sprite Beak;
-				
+		Sprite eyes[2];
+		Sprite beak;
 
 	protected:
 		float dTime;	

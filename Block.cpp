@@ -1,5 +1,6 @@
 #include "Block.h"
 #include <iostream>
+#include <math.h>
 
 Block::Block(Block::Material mat, Block::Shape shape, int x, int y)
 {
@@ -14,19 +15,22 @@ Block::Block(Block::Material mat, Block::Shape shape, int x, int y)
 		//Colour(A,B,G,R);
 
 		case GLASS:
-			hitpoints_ = 5;
+			hitpoints_ = 20;
 			mass_ = 20;
+			bounce = 0.5;
 			set_colour(0xFFFFFFCC);
 			break;
 		case WOOD:
-			hitpoints_ = 10;
+			hitpoints_ = 100;
 			mass_ = 40;
+			bounce = 0.8;
 			set_colour(0xFF336699);
 			break;
 		case STONE:
-			hitpoints_ = 20;
+			hitpoints_ = 200;
+			bounce = 3;
 			mass_ = 80;
-			set_colour(0xFF808080);
+			set_colour(0xFFFF00FF);
 			break;
 	}
 
@@ -48,7 +52,8 @@ Block::Block(Block::Material mat, Block::Shape shape, int x, int y)
 
 void Block::TakeDamage(abfw::Vector2 incomingVelocity)
 {
-	float damage = incomingVelocity.x + incomingVelocity.y;
+
+	float damage = std::abs(incomingVelocity.x) + std::abs(incomingVelocity.y);
 
 	hitpoints_ -= damage;
 }
@@ -57,6 +62,11 @@ void Block::Update(abfw::Vector2 acceleration, int pWidth, int pHeight)
 {
 	set_velocity(velocity().x + acceleration.x, velocity().y + acceleration.y);
 	move(pWidth, pHeight);
+}
+
+float Block::bouncyness()
+{
+	return bounce;
 }
 
 

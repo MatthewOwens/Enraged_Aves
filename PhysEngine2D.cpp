@@ -31,27 +31,6 @@ bool PhysEngine2D::WallCollision(GameObject& object1)
 		object1.set_position(pos.x, screenH_ - (height * 0.5f), 0);
 		return true;
 	}
-
-	// Collision between the top of the object and the top of the screen
-	if(pos.y - (height * 0.5f) < 0)
-	{
-		object1.set_position(pos.x, (height * 0.5f), 0);
-		return false;
-	}
-
-	// Collision between the right of the object and the right of the screen
-	if(pos.x + (width * 0.5f) > screenW_)
-	{
-		object1.set_position(pos.x - (width * 0.5f), pos.y, 0);
-		return false;
-	}
-
-	// Collision between the left of the object and the left of the screen
-	if(pos.x - (width * 0.5f) < 0)
-	{
-		object1.set_position((width * 0.5f), pos.y, 0);
-		return false;
-	}
 	return false;
 }
 
@@ -122,14 +101,15 @@ int PhysEngine2D::BoundingBoxSides(const GameObject& object1, const GameObject& 
 	float posx2 = object2.position().x;
 	float posy2 = object2.position().y;
 
-	if((posy1 - halfh1) < (posy2 + halfh2) && posy1 > posy2)// top
+	if(((posy1 - halfh1) < (posy2 + halfh2)) && (posy1 > posy2))// top
 		return 1;
-	if((posy1 + halfh1) > (posy2 - halfh2) && posy1 < posy2)// bottom
+	if(((posy1 + halfh1) > (posy2 - halfh2)) && (posy1 < posy2))// bottom
 		return 2;
-	if((posx1 - halfw1) < (posx2 + halfw2) && posx1 > posx2)// left
+	if(((posx1 - halfw1) < (posx2 + halfw2)) && (posx1 > posx2))// left
 		return 3;
-	if((posx1 + halfw1) > (posx2 - halfw2) && posx1 < posx2)// right
+	if(((posx1 + halfw1) > (posx2 - halfw2)) && (posx1 < posx2))// right
 		return 4;
+
 	return 0;
 }
 
@@ -147,27 +127,25 @@ void PhysEngine2D::Seperate(GameObject& object1, GameObject& object2)
 	switch (BoundingBoxSides(object1, object2))
 	{
 	case 1:
-		if(posy1 - halfh1 - halfh2 > 0)
-			object2.moveTo(posx2, posy1 - halfh1 - halfh2);
+		if(posy1 - halfh1 - halfh2 - 1> 0)
+			object2.moveTo(posx2, posy1 - halfh1 - halfh2 - 1);
 		else
-			object1.moveTo(posx1, posx2 + halfh1 + halfh2);
+			object1.moveTo(posx1, posx2 + halfh1 + halfh2 + 1);
 		break;
 	case 2:
-		if(posy1 + halfh1 + halfh2 < screenH_ - halfh2)
-			object2.moveTo(posx2, posy1 + halfh1 + halfh2);
+		if(posy1 + halfh1 + halfh2 + 1 < screenH_ - halfh2)
+			object2.moveTo(posx2, posy1 + halfh1 + halfh2 + 1);
 		else
-			object1.moveTo(posx1, posy2 - halfh2 - halfh1);
+			object1.moveTo(posx1, posy2 - halfh2 - halfh1 - 1);
 		break;
 	case 3:
-		object2.moveTo(object1.position().x - object1.width() * 0.5 - object2.width() * 0.5,
-			object2.position().y);
+		object2.moveTo(posx1 - halfw1 - halfw2 - 1, posy2);
 		break;
 	case 4:
-		object2.moveTo(object1.position().x + object1.width() * 0.5,
-			object2.position().y);
+		object2.moveTo(posx1 + halfw1 + halfw2 + 1, posy2);
 		break;
 	case 0:
-		std::cout << "Something went wrong, seperate was called when two blocks wern't colliding" << std::endl;
+		//std::cout << "Something went wrong, seperate was called when two blocks wern't colliding" << std::endl;
 		break;
 	}
 }

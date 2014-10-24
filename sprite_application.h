@@ -5,6 +5,7 @@
 #include <graphics/sprite_renderer.h>
 #include <graphics/font.h>
 #include <input/sony_controller_input_manager.h>
+#include <input/touch_input_manager.h>
 #include <vector>
 #include "Block.h"
 #include "PhysEngine2D.h"
@@ -27,6 +28,7 @@ public:
 
 private:
 	abfw::SonyControllerInputManager* controller_manager_;
+	abfw::TouchInputManager* touch_manager_;
 	std::vector<Block> blocks;
 	Bird bird;
 	std::vector<abfw::Vector2> checkedCollisions_;

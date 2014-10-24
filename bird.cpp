@@ -7,8 +7,8 @@ Bird::Bird()
 	set_width(50.0f);
 	set_height(50.0f);
 	set_position(abfw::Vector3(50.0f, 300.0f, .0f));
-	
-	////////////////sprite creation////////////////////////////////
+
+		////////////////sprite creation////////////////////////////////
 	for (int i = 0;i<32;i++)
 	{
 		body[i].set_position(abfw::Vector3(50.0f, 300.0f, 0.f));
@@ -59,12 +59,11 @@ void Bird::update()
 		velocity_.y += (-9.8)*dTime;
 
 		moveTo(flightX, flightY);
-		
-	////////////////////////////////////////////////////
 
-	for (int i = 1;i<32;i++)
+	////////////////////////////////////////////////////
+	for (int i = 0;i<32;i++)
 	{
-		body[i].set_position(abfw::Vector3(.position().x,position().y, o.f));
+		body[i].set_position(abfw::Vector3(position().x,position().y, 0.f));
 		eyes[0].set_position(abfw::Vector3(position().x - 8.0f, position().y - 8.0f, 0.f));
 		eyes[1].set_position(abfw::Vector3(position().x + 8.0f, position().y - 8.0f, 0.f));
 		beak.set_position(abfw::Vector3(position().x, position().y+8.0f, 0.f));
@@ -85,6 +84,7 @@ void Bird::bounceGround(float e)
 void Bird::bounceX(float e)
 {
 	velocity_.x = -velocity_.x * e;
+	velocity_.x = velocity_.x * 0.8;
 
 	shoot(velocity_.x, velocity_.y);
 }
@@ -102,4 +102,24 @@ void Bird::reset(float x, float y)
 {
 	flying = false;
 	set_position(abfw::Vector3(x, y, .0f));
+
+	////////////////////////////////////////////////////
+	for (int i = 0;i<32;i++)
+	{
+		body[i].set_position(abfw::Vector3(position().x,position().y, 0.f));
+		eyes[0].set_position(abfw::Vector3(position().x - 8.0f, position().y - 8.0f, 0.f));
+		eyes[1].set_position(abfw::Vector3(position().x + 8.0f, position().y - 8.0f, 0.f));
+		beak.set_position(abfw::Vector3(position().x, position().y+8.0f, 0.f));
+	}
+	////////////////////////////////////////////////////
+}
+
+void Bird::render(abfw::SpriteRenderer* sr)
+{
+	for(int i = 0; i < 32; i++)
+		sr->DrawSprite(body[i]);
+	for(int i = 0; i < 2; i++)
+		sr->DrawSprite(eyes[i]);
+
+	sr->DrawSprite(beak);
 }
