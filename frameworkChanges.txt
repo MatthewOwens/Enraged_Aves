@@ -1,0 +1,13 @@
+# sprite.h
+inline void set_position(const float x, const float y, const float z) {position.x = x; position.y = y; position.z = z;}
+
+# vector2.h
+bool operator ==(const Vector2& that) const;
+
+# vector2.cpp
+bool Vector2::operator ==(const Vector2& that) const
+{
+	if(that.x == x && that.y == y)
+		return true;
+	else return false;
+}
